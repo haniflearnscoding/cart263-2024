@@ -16,7 +16,7 @@ class Animal {
         imageMode(CENTER);
         translate(this.x, this.y);
         rotate(this.angle);
-        this.image(this.image, 0, 0);
+        image(this.image, 0, 0);
         pop();
     }
 }
