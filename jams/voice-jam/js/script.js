@@ -7,6 +7,7 @@
 "use strict";
 const speechRecognizer = new p5.SpeechRec();
 const speechSynthesizer = new p5.Speech();
+const oscillator = new p5.Oscillator();
 
 
 
@@ -21,6 +22,8 @@ function preload() {
 // Creates the canvas
 function setup() {
     createCanvas(500, 500);
+    userStartAudio()
+
 
     speechSynthesizer.setPitch(1);
     speechSynthesizer.setRate(1);
@@ -29,14 +32,17 @@ function setup() {
     };
     // bgSound.loop();
 
+    oscillator.setType('sine');
+    oscillator.freq(500);
+    oscillator.amp(0);
+
     speechRecognizer.onResult = handleSpeechInput;
     speechRecognizer.continuous = true;
     speechRecognizer.start();
 
     setInterval(saySomething, 2000);
 
-    // speechSynthesizer.onStart = speechStarted;
-    // speechSynthesizer.onEnd = speechEnded;
+
 
 }
 
@@ -66,7 +72,16 @@ function saySomething() {
     }
     if (voiceBox.length > 0) {
         console.log(`test`);
+        applyOscillator();
         speechSynthesizer.speak(random(voiceBox));
         talking = true;
     }
+}
+
+function applyOscillator() {
+
+    oscillator.freq(random(200, 800));
+    oscillator.amp(0.5, 0.1);
+    oscillator.start();
+    oscillator.stop(0.1);
 }
