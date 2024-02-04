@@ -7,13 +7,14 @@
 "use strict";
 const speechRecognizer = new p5.SpeechRec();
 const speechSynthesizer = new p5.Speech();
-const oscillator = new p5.Oscillator();
-
 
 
 let bgSound;
-let voiceBox = [`books`, `hellooo`, `lion`, `shadows`];
+let voiceBox = [];
 let talking = false;
+
+let pitch = 1;
+let rate = 1;
 
 function preload() {
     bgSound = loadSound(`assets/sounds/city-ambience-9272.mp3`);
@@ -24,25 +25,21 @@ function setup() {
     createCanvas(500, 500);
     userStartAudio()
 
+    speechSynthesizer.setVoice(`Cellos`);
+    // console.log(speechSynthesizer.voices);
 
-    speechSynthesizer.setPitch(1);
-    speechSynthesizer.setRate(1);
+    speechSynthesizer.setPitch(pitch);
+    console.log(pitch);
+    speechSynthesizer.setRate(rate);
     speechSynthesizer.onEnd = () => {
         talking = false;
     };
-    // bgSound.loop();
-
-    oscillator.setType('sine');
-    oscillator.freq(500);
-    oscillator.amp(0);
 
     speechRecognizer.onResult = handleSpeechInput;
     speechRecognizer.continuous = true;
     speechRecognizer.start();
 
     setInterval(saySomething, 2000);
-
-
 
 }
 
@@ -72,16 +69,25 @@ function saySomething() {
     }
     if (voiceBox.length > 0) {
         console.log(`test`);
-        applyOscillator();
+        //double letter?
+        //split individual words, each word different rate/pitch
+        //random voice
+        //how to make speech more sonic effect
+        //mute the voices down, up bg noise
+        //different accents
+
+        // typography with whats being said, that evokes city idea
+        // fly like birds
+
         speechSynthesizer.speak(random(voiceBox));
+        pitch = random(0.01, 2);
+        rate = random(0.01, 2);
+
+        speechSynthesizer.setPitch(pitch)
+        speechSynthesizer.setRate(rate)
+
         talking = true;
+
+
     }
-}
-
-function applyOscillator() {
-
-    oscillator.freq(random(200, 800));
-    oscillator.amp(0.5, 0.1);
-    oscillator.start();
-    oscillator.stop(0.1);
 }
