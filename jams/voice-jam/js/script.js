@@ -10,7 +10,7 @@ const speechSynthesizer = new p5.Speech();
 
 
 let bgSound;
-let voiceBox = [];
+let voiceBox = [`hello`, `cat`, `spider`];
 let talking = false;
 
 let pitch = 1;
@@ -31,9 +31,16 @@ function setup() {
     speechSynthesizer.setPitch(pitch);
     console.log(pitch);
     speechSynthesizer.setRate(rate);
+
+    speechSynthesizer.onStart = () => {
+        talking = true;
+    };
     speechSynthesizer.onEnd = () => {
         talking = false;
+
     };
+
+
 
     speechRecognizer.onResult = handleSpeechInput;
     speechRecognizer.continuous = true;
@@ -46,6 +53,11 @@ function setup() {
 // Draw a sparkling grid
 function draw() {
     background(0);
+
+    fill(255);
+    textSize(20);
+    textAlign(CENTER, CENTER);
+    text(speechSynthesizer.speak() ? modifiedVoice : "Press mouse to start", width / 2, height / 2);
 
 }
 
@@ -64,30 +76,44 @@ function handleSpeechInput() {
 }
 
 function saySomething() {
+    console.log(`test1`);
     if (talking) {
+        console.log(`test2`);
         return;
     }
     if (voiceBox.length > 0) {
-        console.log(`test`);
-        //double letter?
-        //split individual words, each word different rate/pitch
-        //random voice
-        //how to make speech more sonic effect
-        //mute the voices down, up bg noise
-        //different accents
+        console.log(`test3`);
 
-        // typography with whats being said, that evokes city idea
-        // fly like birds
-
-        speechSynthesizer.speak(random(voiceBox));
         pitch = random(0.01, 2);
         rate = random(0.01, 2);
 
-        speechSynthesizer.setPitch(pitch)
-        speechSynthesizer.setRate(rate)
+        speechSynthesizer.setPitch(pitch);
+        speechSynthesizer.setRate(rate);
 
+
+        const randomVoice = random(voiceBox);
+        const modifiedVoice = addLetter(randomVoice);
+
+
+        speechSynthesizer.onEnd = () => {
+            talking = false;
+            setTimeout(saySomething, 2000);
+        };
+
+        speechSynthesizer.speak(modifiedVoice);
         talking = true;
-
-
     }
+}
+
+
+function addLetter(phrase) {
+
+    const words = phrase.split(' ');
+
+    const modifiedWords = words.map(word => {
+        const lastLetter = word.charAt(word.length - 1);
+        return word + lastLetter.toLowerCase() + lastLetter.toUpperCase();
+    });
+
+    return modifiedWords.join(' ');
 }
