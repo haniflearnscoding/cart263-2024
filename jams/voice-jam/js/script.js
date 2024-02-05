@@ -8,6 +8,7 @@
 const speechRecognizer = new p5.SpeechRec();
 const speechSynthesizer = new p5.Speech();
 
+let displayText = "Press mouse to start";
 
 let bgSound;
 let voiceBox = [`hello`, `cat`, `spider`];
@@ -54,11 +55,41 @@ function setup() {
 function draw() {
     background(0);
 
-    fill(255);
-    textSize(20);
-    textAlign(CENTER, CENTER);
-    text(speechSynthesizer.speak() ? modifiedVoice : "Press mouse to start", width / 2, height / 2);
+    drawCity(displayText);
+}
 
+function drawCity(phrase) {
+    const words = phrase.split(' ');
+
+
+    let x = 50;
+    let y = height - 75;
+
+
+    for (let i = 0; i < words.length; i++) {
+        const fontSize = map(words[i].length, 0, 10, 10, 30);
+        fill(255);
+        textSize(fontSize);
+
+        push();
+        translate(x, y);
+        rotate(HALF_PI);
+
+        textAlign(CENTER, CENTER);
+
+        text(words[i], 0, 0);
+        console.log(x);
+        console.log(y);
+
+        pop();
+
+        y -= textWidth(words[i]) + 10;
+
+        if (y < 50) {
+            y = height - 50;
+            x += fontSize + 20;
+        }
+    }
 }
 
 function mousePressed() {
@@ -102,6 +133,8 @@ function saySomething() {
 
         speechSynthesizer.speak(modifiedVoice);
         talking = true;
+
+        displayText = talking ? modifiedVoice : "Press mouse to start";
     }
 }
 
