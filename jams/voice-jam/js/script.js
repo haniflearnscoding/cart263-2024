@@ -9,13 +9,20 @@ const speechRecognizer = new p5.SpeechRec();
 const speechSynthesizer = new p5.Speech();
 
 let displayText = "Press mouse to start";
+let displayedTexts = [];
 
 let bgSound;
-let voiceBox = [`hello`, `cat`, `spider`];
+let voiceBox = [];
 let talking = false;
 
 let pitch = 1;
 let rate = 1;
+
+let talkedAtleastOnce = false; //for initial change ;)
+
+
+
+
 
 function preload() {
     bgSound = loadSound(`assets/sounds/city-ambience-9272.mp3`);
@@ -26,6 +33,7 @@ function setup() {
     createCanvas(500, 500);
     userStartAudio()
 
+
     speechSynthesizer.setVoice(`Cellos`);
     // console.log(speechSynthesizer.voices);
 
@@ -33,13 +41,8 @@ function setup() {
     console.log(pitch);
     speechSynthesizer.setRate(rate);
 
-    speechSynthesizer.onStart = () => {
-        talking = true;
-    };
-    speechSynthesizer.onEnd = () => {
-        talking = false;
-
-    };
+    //keep
+    setInterval(saySomething, 2000);
 
 
 
@@ -47,25 +50,37 @@ function setup() {
     speechRecognizer.continuous = true;
     speechRecognizer.start();
 
-    setInterval(saySomething, 2000);
-
 }
+
+
 
 // Draw a sparkling grid
 function draw() {
     background(0);
+    if (displayText !== "") {
+        fill(255);
+        textSize(20);
+        textAlign(CENTER, CENTER);
+        text(displayText, width / 2, height / 2);
+    } else {
+        drawCity(displayedTexts.join(' '));
 
-    drawCity(displayText);
+    }
+
+
 }
 
 function drawCity(phrase) {
+
     const words = phrase.split(' ');
+    //console.log(words);
 
 
     let x = 50;
     let y = height - 75;
 
 
+    // console.log(words.length);
     for (let i = 0; i < words.length; i++) {
         const fontSize = map(words[i].length, 0, 10, 10, 30);
         fill(255);
@@ -78,8 +93,8 @@ function drawCity(phrase) {
         textAlign(CENTER, CENTER);
 
         text(words[i], 0, 0);
-        console.log(x);
-        console.log(y);
+        //  console.log(x);
+        // console.log(y);
 
         pop();
 
@@ -93,25 +108,45 @@ function drawCity(phrase) {
 }
 
 function mousePressed() {
+    if (displayText === "Press mouse to start") {
+        displayText = "";
+    }
     bgSound.loop();
 }
 
 
 function handleSpeechInput() {
+
     if (!speechRecognizer.resultValue) {
         return;
     }
-    voiceBox.push(speechRecognizer.resultString);
-    console.log(speechRecognizer.resultString);
-
+    const spokenText = speechRecognizer.resultString;
+    voiceBox.push(spokenText);
+    displayedTexts.push(spokenText);
+    console.log(spokenText);
 }
 
+//SET THESE OUTSIDE
+speechSynthesizer.onEnd = () => {
+    talkedAtleastOnce = true;
+    talking = false;
+    console.log("end");
+
+};
+speechSynthesizer.onStart = () => {
+    talking = true;
+    console.log("start");
+
+};
+
 function saySomething() {
+    // console.log("are we here?")
     console.log(`test1`);
     if (talking) {
         console.log(`test2`);
         return;
     }
+    //talking is false so choose
     if (voiceBox.length > 0) {
         console.log(`test3`);
 
@@ -124,17 +159,12 @@ function saySomething() {
 
         const randomVoice = random(voiceBox);
         const modifiedVoice = addLetter(randomVoice);
-
-
-        speechSynthesizer.onEnd = () => {
-            talking = false;
-            setTimeout(saySomething, 2000);
-        };
-
+        console.log(modifiedVoice);
         speechSynthesizer.speak(modifiedVoice);
-        talking = true;
 
-        displayText = talking ? modifiedVoice : "Press mouse to start";
+        //SET MODIFIED VOICE HERE
+        displayedTexts.push(talkedAtleastOnce ? modifiedVoice : "");
+
     }
 }
 
