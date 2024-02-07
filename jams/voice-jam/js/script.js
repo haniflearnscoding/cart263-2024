@@ -72,7 +72,7 @@ function setup() {
 // Draw a sparkling grid
 function draw() {
     // set background color
-    background(0, 150, 255);
+    background(0);
 
     // transition from intro text
     if (displayText !== "") {
