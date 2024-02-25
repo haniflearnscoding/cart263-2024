@@ -2,6 +2,16 @@ let facemesh;
 let video;
 let predictions = [];
 
+const options = {
+    flipHorizontal: false, // boolean value for if the video should be flipped, defaults to false
+    maxContinuousChecks: 5, // How many frames to go without running the bounding box detector. Only relevant if maxFaces > 1. Defaults to 5.
+    detectionConfidence: 0.9, // Threshold for discarding a prediction. Defaults to 0.9.
+    maxFaces: 2, // The maximum number of faces detected in the input. Should be set to the minimum number for performance. Defaults to 10.
+    scoreThreshold: 0.75, // A threshold for removing multiple (likely duplicate) detections based on a "non-maximum suppression" algorithm. Defaults to 0.75.
+    iouThreshold: 0.3, // A float representing the threshold for deciding whether boxes overlap too much in non-maximum suppression. Must be between [0, 1]. Defaults to 0.3.
+}
+
+
 // Constants defining our grid
 const TILE_SIZE = 100;
 const COLUMNS = 10;
@@ -13,7 +23,7 @@ function setup() {
     video = createCapture(VIDEO);
     video.size(width, height);
 
-    facemesh = ml5.facemesh(video, modelReady);
+    facemesh = ml5.facemesh(video, options, modelReady);
 
     // This sets up an event that fills the global variable "predictions"
     // with an array every time new predictions are made
@@ -70,27 +80,37 @@ function drawTile(row, col) {
 // A function to draw ellipses over the detected keypoints
 function drawKeypoints() {
     for (let i = 0; i < predictions.length; i += 1) {
-        const keypoints = predictions[i].scaledMesh;
+        const keypoints = predictions[0].scaledMesh;
 
         // Draw facial keypoints.
-        for (let j = 0; j < keypoints.length; j += 1) {
-            const [x, y] = keypoints[j];
+        for (let j = 0; j < keypoints.length; j += 10) {
+            if (keypoints[j][2] > 0) {
 
-            colorMode(HSB);
-            noStroke();
-            //use hsb
-            //sound
-            //interative
+                // console.log(keypoints);
+                const [x, y] = keypoints[j];
 
-            let hue = 0 + random(0, 20);
-            let saturation = 50 + random(50);
+                colorMode(HSB);
+                noStroke();
 
-            fill(hue, saturation, 100);
+                let hue = 0 + random(0, 20);
+                let saturation = 50 + random(50);
 
-            // fill(random(170, 255), random(0, 80), random(100, 200)); // purple
+                fill(hue, saturation, 100);
+                rect(x, y, random(10, 50), (10, 40));
+            }
 
-            rect(x, y, random(10, 50), (10, 40));
+            console.log(predictions);
+
+            // if (facemesh) {
+            //     j += 10;
+            //     console.log(j);
+            // }
+
 
         }
     }
 }
+
+//use hsb
+//sound
+//interative
