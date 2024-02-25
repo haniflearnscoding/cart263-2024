@@ -1,3 +1,10 @@
-# Template p5 project
+# Ai Jam
 
-This is the README file for the entire project. For more official projects you should write information here about the nature of the project, your name, any special explanations of how the project works, etc.
+by Hanif Hashim
+
+Attributions: 
+
+-drawTile function https://pippinbarr.com/cart263/topics/javascript/constants.html
+
+-facemesh code https://learn.ml5js.org/#/reference/facemesh
+
