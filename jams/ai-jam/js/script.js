@@ -1,3 +1,5 @@
+
+//Declare variables for facemeshmodel, video capture and predictions array
 let facemesh;
 let video;
 let predictions = [];
@@ -18,11 +20,15 @@ const COLUMNS = 10;
 const ROWS = 10;
 
 function setup() {
+    //create a canvas
     createCanvas(640, 480);
-    // createCanvas(TILE_SIZE * COLUMNS, TILE_SIZE * ROWS);
+
+    //capture video from webcam
     video = createCapture(VIDEO);
+    //resize the video to the canvas dimensions
     video.size(width, height);
 
+    //initialize facemesh
     facemesh = ml5.facemesh(video, options, modelReady);
 
     // This sets up an event that fills the global variable "predictions"
@@ -36,12 +42,16 @@ function setup() {
 }
 
 function modelReady() {
+    //log message when model is ready
     console.log("Model ready!");
 }
 
 function draw() {
+    //display video on canvas
     image(video, 0, 0, width, height);
+    //set backgound to black
     background(0);
+
     // Loop through each row
     for (let row = 0; row < ROWS; row++) {
         // Loop through each column
@@ -57,6 +67,7 @@ function draw() {
 
 // Draw a tile at the specified row and column
 function drawTile(row, col) {
+    //set the color mode to HSB
     colorMode(HSB);
 
     // Calculate the x and y of the tile on the canvas
@@ -66,46 +77,47 @@ function drawTile(row, col) {
     // Draw a random shaded tile sized square at that location
     push();
     noStroke();
-    // let grey = random(50, 200);
-    // fill(grey);
+
+    //generate random hue and saturation values
     let hue = 220 + random(0, 20);
     let saturation = 100 + random(0, 20);
 
+    //set the fill based on hue/saturation value
     fill(hue, saturation, 100);
-    // fill(0, 0, random(150, 255));
+
+    //draw rectangle for tile
     rect(x, y, TILE_SIZE, TILE_SIZE);
     pop();
 }
 
 // A function to draw ellipses over the detected keypoints
 function drawKeypoints() {
+    //loop through each detected face
     for (let i = 0; i < predictions.length; i += 1) {
+        //get keypoints on the current prediction
         const keypoints = predictions[0].scaledMesh;
 
         // Draw facial keypoints.
         for (let j = 0; j < keypoints.length; j += 10) {
+            //check if the keypoints is greater than 0
             if (keypoints[j][2] > 0) {
-
-                // console.log(keypoints);
+                //extract coordinates from keypoints
                 const [x, y] = keypoints[j];
 
+                //set drawing parameters
                 colorMode(HSB);
                 noStroke();
 
+                //generate random hue and saturation values
                 let hue = 0 + random(0, 20);
                 let saturation = 50 + random(50);
 
+                //set the fill based on hue and saturation
                 fill(hue, saturation, 100);
+                //draw a rectangle on keypoints with random width and height
                 rect(x, y, random(10, 50), (10, 40));
             }
-
             console.log(predictions);
-
-            // if (facemesh) {
-            //     j += 10;
-            //     console.log(j);
-            // }
-
 
         }
     }
