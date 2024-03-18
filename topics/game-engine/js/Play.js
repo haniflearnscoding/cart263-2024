@@ -9,6 +9,7 @@ class Play extends Phaser.Scene {
     create() {
 
         this.wall = this.physics.add.image(100, 100, `wall`);
+        this.wall.setImmovable(true);
         this.wall.setTint(0xdd3333);
 
         this.avatar = this.physics.add.sprite(200, 200, `avatar`);
@@ -18,6 +19,9 @@ class Play extends Phaser.Scene {
 
         this.avatar.play(`avatar-idle`);
         this.avatar.setCollideWorldBounds(true);
+
+        this.physics.add.collider(this.avatar, this.wall);
+
 
         this.cursors = this.input.keyboard.createCursorKeys();
     }
