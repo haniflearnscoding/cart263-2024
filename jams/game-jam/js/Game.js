@@ -6,6 +6,9 @@ class Game extends Phaser.Scene {
   /** @type {Phaser.Physics.Arcade.GameObjects.Sprite} */
   player
 
+  /** @type {Phaser.Physics.Arcade.StaticGroup} */
+  boxGroup
+
   constructor() {
     super(`game`);
   }
@@ -17,8 +20,39 @@ class Game extends Phaser.Scene {
   create() {
     const { width, height } = this.scale;
 
-    this.player = this.physics.add.sprite(width * 0.5, height * 0.5, `sokoban`)
+    this.player = this.physics.add.sprite(width * 0.5, height * 0.6, `sokoban`)
+      .setSize(40, 16)
+      .setOffset(12, 38)
       .play('down-idle')
+
+    this.boxGroup = this.physics.add.staticGroup();
+
+    // this.boxGroup.get(width * 0.25, 150, `sokoban`, 10);
+    this.createBoxes();
+
+    this.physics.add.collider(this.player, this.boxGroup);
+  }
+
+  createBoxes() {
+
+    const width = this.scale.width;
+    let xPer = 0.25;
+    let y = 150;
+
+    for (let row = 0; row < 3; ++row) {
+
+      for (let col = 0; col < 3; ++col) {
+        /**@type {Phaser.Physics.Arcade.Sprite} */
+        const box = this.boxGroup.get(width * xPer, y, 'sokoban', 10)
+        box.setSize(64, 32)
+          .setOffset(0, 32)
+        xPer += 0.25;
+      }
+
+      xPer = 0.25;
+      y += 150;
+
+    }
   }
 
   update() {
@@ -47,6 +81,14 @@ class Game extends Phaser.Scene {
       const direction = parts[0];
       this.player.play(`${direction}-idle`);
     }
+
+    this.children.each(c => {
+      /** @type {Phaser.Physics.Arcade.Sprite} */
+      const child = c;
+
+      child.setDepth(child.y);
+    });
+
   }
 
 }
