@@ -21,6 +21,9 @@ class Game extends Phaser.Scene {
   /** @type {Phaser.GameObjects.Group} */
   itemsGroup
 
+  /** @type {{box: Phaser.Physics.Arcade.Sprite, item: Phaser.GameObjects.Sprite}} */
+  selectedBoxes = []
+
   constructor() {
     super(`game`);
   }
@@ -77,6 +80,10 @@ class Game extends Phaser.Scene {
    */
   handlePlayerBoxCollide(player, box) {
 
+    if (box.getData('opened')) {
+      return;
+    }
+
     if (this.activeBox) {
       return;
     }
@@ -125,18 +132,60 @@ class Game extends Phaser.Scene {
       return;
     }
 
+    box.setData('opened', true);
+
+    item.setData('sorted', true);
+    item.setDepth(2000);
+
     item.scale = 0
     item.alpha = 0
+
+    this.selectedBoxes.push({ box, item });
 
     this.tweens.add({
       targets: item,
       y: '-=50',
       alpha: 1,
       scale: 0.5,
-      duration: 500
+      duration: 500,
+      onComplete: () => {
+        if (this.selectedBoxes.length < 2) {
+          return;
+        }
+
+        this.checkForMatch();
+
+      }
     });
 
+    this.activeBox.setFrame(10);
     this.activeBox = undefined;
+
+  }
+
+  checkForMatch() {
+    const second = this.selectedBoxes.pop();
+    const first = this.selectedBoxes.pop();
+
+    if (first.item.texture !== second.item.texture) {
+      this.tweens.add({
+        targets: [first.item, second.item],
+        y: '+=50',
+        alpha: 0,
+        scale: 0,
+        duration: 300,
+        delay: 1000,
+        onComplete: () => {
+          first.box.setData('opened', false);
+          second.box.setData('opened', false);
+        }
+      });
+      return;
+    }
+    this.time.delayedCall(1000, () => {
+      first.box.setFrame(8);
+      second.box.setFrame(8);
+    })
 
   }
 
@@ -174,6 +223,8 @@ class Game extends Phaser.Scene {
 
   }
 
+
+
   updateActiveBox() {
     if (!this.activeBox) {
       return;
@@ -200,6 +251,10 @@ class Game extends Phaser.Scene {
     this.children.each(c => {
       /** @type {Phaser.Physics.Arcade.Sprite} */
       const child = c;
+
+      if (child.getData('sorted')) {
+        return;
+      }
 
       child.setDepth(child.y);
     });
