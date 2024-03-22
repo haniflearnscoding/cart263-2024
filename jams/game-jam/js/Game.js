@@ -1,8 +1,23 @@
 const level = [
-  [1, 0, 3],
-  [2, 4, 1],
-  [3, 4, 2]
+  [1, 2, 3],
+  [2, 3, 1]
 ]
+
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+
+for (let i = 0; i < level.length; i++) {
+  level[i] = shuffleArray(level[i]);
+}
+
+console.log(level);
 
 class Game extends Phaser.Scene {
 
@@ -49,6 +64,7 @@ class Game extends Phaser.Scene {
 
     this.physics.add.collider(this.player, this.boxGroup, this.handlePlayerBoxCollide, undefined, this);
   }
+
 
   createBoxes() {
 
@@ -182,9 +198,34 @@ class Game extends Phaser.Scene {
       });
       return;
     }
+
+    if (isNaN(this.matchesCount)) {
+      this.matchesCount = 0;
+    }
+
+    ++this.matchesCount
+
+    console.log(this.matchesCount);
+
     this.time.delayedCall(1000, () => {
       first.box.setFrame(8);
       second.box.setFrame(8);
+      // console.log(this.player.active);
+
+      // const totalBoxes = this.level.length * this.level[0].length;
+      // this.matchesCount >= totalBoxes / 2)
+      if (this.matchesCount >= 3) {
+
+        this.player.active = false;
+        // console.log(this.player.active);
+        this.player.setVelocity(0, 0);
+
+        const { width, height } = this.game.scale;
+        this.add.text(width * 0.5, height * 0.5, `You Win!`, {
+          fontSize: 48
+        })
+          .setOrigin(0.5);
+      }
     })
 
   }

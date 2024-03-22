@@ -61,7 +61,7 @@ class Boot extends Phaser.Scene {
 
     });
 
-    this.scene.start(`game`);
+    this.scene.start(`menu`);
   }
 
 }
