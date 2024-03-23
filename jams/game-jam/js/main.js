@@ -12,6 +12,7 @@ const config = {
     }
   },
   scene: [Boot, Menu, Game]
+  // scene: [Boot, Menu, Game, InvisibleMatch]
 }
 
 let game = new Phaser.Game(config);

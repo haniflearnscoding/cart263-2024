@@ -10,7 +10,7 @@ class Menu extends Phaser.Scene {
 
     let menuKeys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let scenes = [
-      `game`
+      `game`, `invisible_match`
     ];
 
     let menu = [];
@@ -30,7 +30,7 @@ class Menu extends Phaser.Scene {
       }
     });
 
-    let title = this.add.text(this.game.canvas.width / 2, 80, "Memory");
+    let title = this.add.text(this.game.canvas.width / 2, 80, "Match");
     title.setOrigin(0.5, 0);
 
     let x = 80;
