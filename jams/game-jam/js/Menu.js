@@ -15,7 +15,7 @@ class Menu extends Phaser.Scene {
 
     //define array with scene names
     let scenes = [
-      `game`, `invisible match`, `moving match`
+      `game`, `invisible match`, `moving match`, `player match`
     ];
 
     // define empty array for menu options

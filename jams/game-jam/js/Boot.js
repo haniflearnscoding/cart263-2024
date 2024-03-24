@@ -10,6 +10,7 @@ class Boot extends Phaser.Scene {
     });
 
     //load images
+    this.load.image(`player`, `assets/sokoban_tilesheet2.png`);
     this.load.image(`bear`, `assets/bear.png`);
     this.load.image(`chick`, `assets/chick.png`);
     this.load.image(`duck`, `assets/duck.png`);
