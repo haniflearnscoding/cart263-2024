@@ -3,9 +3,13 @@ class Boot extends Phaser.Scene {
     super(`preloader`);
   }
   preload() {
+
+    //load spritesheet for user character
     this.load.spritesheet(`sokoban`, `assets/sokoban_tilesheet.png`, {
       frameWidth: 64
     });
+
+    //load images
     this.load.image(`bear`, `assets/bear.png`);
     this.load.image(`chick`, `assets/chick.png`);
     this.load.image(`duck`, `assets/duck.png`);
@@ -16,6 +20,8 @@ class Boot extends Phaser.Scene {
 
   }
   create() {
+
+    //animation for main character in different states and direction
     this.anims.create({
       key: 'down-idle',
       frames: [{ key: 'sokoban', frame: 52 }]
@@ -61,6 +67,7 @@ class Boot extends Phaser.Scene {
 
     });
 
+    //start menu scene
     this.scene.start(`menu`);
   }
 
