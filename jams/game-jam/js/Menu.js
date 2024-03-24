@@ -10,7 +10,7 @@ class Menu extends Phaser.Scene {
 
     let menuKeys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let scenes = [
-      `game`, `invisible_match`
+      `game`, `invisible match`, `moving match`
     ];
 
     let menu = [];

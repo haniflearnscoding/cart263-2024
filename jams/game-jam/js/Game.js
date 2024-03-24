@@ -39,8 +39,13 @@ class Game extends Phaser.Scene {
   /** @type {{box: Phaser.Physics.Arcade.Sprite, item: Phaser.GameObjects.Sprite}} */
   selectedBoxes = []
 
-  constructor() {
-    super(`game`);
+  constructor(data) {
+    if (data && data.key) {
+      super(data.key);
+    }
+    else {
+      super(`game`);
+    }
   }
 
   init() {
@@ -55,7 +60,12 @@ class Game extends Phaser.Scene {
       .setOffset(12, 38)
       .play('down-idle')
 
-    this.boxGroup = this.physics.add.staticGroup();
+    // this.boxGroup = this.physics.add.group()
+    //   .setVelocity(0, -100);
+
+    this.boxGroup = this.physics.add.staticGroup()
+
+
 
     // this.boxGroup.get(width * 0.25, 150, `sokoban`, 10);
     this.createBoxes();
@@ -80,6 +90,7 @@ class Game extends Phaser.Scene {
         box.setSize(64, 32)
           .setOffset(0, 32)
           .setData('itemType', level[row][col])
+
         xPer += 0.25;
       }
 
@@ -88,6 +99,8 @@ class Game extends Phaser.Scene {
 
     }
   }
+
+
 
   /**
    * 

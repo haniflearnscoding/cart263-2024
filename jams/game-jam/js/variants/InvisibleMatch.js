@@ -1,7 +1,7 @@
 class InvisibleMatch extends Game {
   constructor() {
     super({
-      key: `invisible_match`
+      key: `invisible match`
     })
   }
 
