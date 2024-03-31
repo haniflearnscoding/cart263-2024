@@ -61,16 +61,28 @@ class Game extends Phaser.Scene {
 
   create() {
 
-    if(this.gameType ===`game`){
-         //static group for boxes
-    this.boxGroup = this.physics.add.staticGroup()
+    if (this.gameType === `game`) {
+      //static group for boxes
+      this.boxGroup = this.physics.add.staticGroup()
     }
 
-    else{
+    else {
       this.boxGroup = this.physics.add.group()
     }
 
-    
+    //instructions 
+    setInterval(() => {
+      this.text = this.add.text(400, 500, 'KEY ARROWS & SPACEBAR', { fontFamily: 'Arial', fontSize: 32, color: '#ffff00' });
+      this.text.setOrigin(0.5);
+
+    }, 1000);
+
+    // function instruction() {
+    //   t = setInterval(this.text = this.add.text(400, 500, 'KEY ARROWS & SPACEBAR', { fontFamily: 'Arial', fontSize: 32, color: '#ffff00' }), 1000);
+    // }
+
+
+
     // width and height of game window
     const { width, height } = this.scale;
 
@@ -80,8 +92,8 @@ class Game extends Phaser.Scene {
       .setOffset(12, 38)
       .play('down-idle')
 
- 
- 
+
+
 
     //create boxes based on levels
     this.createBoxes();
@@ -225,6 +237,7 @@ class Game extends Phaser.Scene {
 
   //check for matches between birds
   checkForMatch() {
+    // clearTimeout(t);
     //first and second items from boxes
     const second = this.selectedBoxes.pop();
     const first = this.selectedBoxes.pop();
