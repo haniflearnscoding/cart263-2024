@@ -61,17 +61,10 @@ class Game extends Phaser.Scene {
 
   create() {
 
-    if (this.gameType === `game`) {
-      //static group for boxes
-      this.boxGroup = this.physics.add.staticGroup()
-    }
 
-    else {
-      this.boxGroup = this.physics.add.group()
-    }
 
     //instructions 
-    setInterval(() => {
+    setTimeout(() => {
       this.text = this.add.text(400, 500, 'KEY ARROWS & SPACEBAR', { fontFamily: 'Arial', fontSize: 32, color: '#ffff00' });
       this.text.setOrigin(0.5);
 
@@ -87,7 +80,7 @@ class Game extends Phaser.Scene {
     const { width, height } = this.scale;
 
     //player sprite and animation
-    this.player = this.physics.add.sprite(width * 0.5, height * 0.6, `sokoban`)
+    this.player = this.physics.add.sprite(width * 0.5, height * 0.6, `user`)
       .setSize(40, 16)
       .setOffset(12, 38)
       .play('down-idle')
@@ -96,6 +89,7 @@ class Game extends Phaser.Scene {
 
 
     //create boxes based on levels
+    this.createBoxGroup();
     this.createBoxes();
 
     //create group for items
@@ -103,6 +97,10 @@ class Game extends Phaser.Scene {
 
     //collition detection between player and boxes
     this.physics.add.collider(this.player, this.boxGroup, this.handlePlayerBoxCollide, undefined, this);
+  }
+
+  createBoxGroup() {
+    this.boxGroup = this.physics.add.staticGroup();
   }
 
 
