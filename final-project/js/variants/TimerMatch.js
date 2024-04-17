@@ -21,12 +21,15 @@ class TimerMatch extends Game {
     this.timerText.setText('Time: ' + this.currentTime);
 
     if (this.currentTime <= 0) {
-      this.gameOver();
+      this.checkEndCondition(box);
     }
   }
 
-  gameOver() {
-    this.time.removeAllEvents();
+  checkEndCondition(box) {
+    super.checkEndCondition();
+    this.player.active = false;
+    this.player.setVelocity(0, 0);
+
   }
 
 }

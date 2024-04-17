@@ -247,11 +247,11 @@ class Game extends Phaser.Scene {
     }
     ++this.matchesCount
 
-    this.checkWinCondition();
+    this.checkEndCondition(first, second);
 
   }
 
-  checkWinCondition() {
+  checkEndCondition(first, second) {
     //after delay, set the same color for matched boxes
     this.time.delayedCall(1000, () => {
       first.box.setFrame(8);
