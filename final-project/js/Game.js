@@ -60,22 +60,6 @@ class Game extends Phaser.Scene {
   }
 
   create() {
-
-
-
-    //instructions 
-    setTimeout(() => {
-      this.text = this.add.text(400, 500, 'KEY ARROWS & SPACEBAR', { fontFamily: 'Arial', fontSize: 32, color: '#ffff00' });
-      this.text.setOrigin(0.5);
-
-    }, 1000);
-
-    // function instruction() {
-    //   t = setInterval(this.text = this.add.text(400, 500, 'KEY ARROWS & SPACEBAR', { fontFamily: 'Arial', fontSize: 32, color: '#ffff00' }), 1000);
-    // }
-
-
-
     // width and height of game window
     const { width, height } = this.scale;
 
@@ -120,6 +104,7 @@ class Game extends Phaser.Scene {
         box.setSize(64, 32)
           .setOffset(0, 32)
           .setData('itemType', level[row][col])
+
         //moves to the next horizontal position
         xPer += 0.25;
       }
@@ -262,13 +247,16 @@ class Game extends Phaser.Scene {
     }
     ++this.matchesCount
 
+    this.checkWinCondition();
+
+  }
+
+  checkWinCondition() {
     //after delay, set the same color for matched boxes
     this.time.delayedCall(1000, () => {
       first.box.setFrame(8);
       second.box.setFrame(8);
 
-      // const totalBoxes = this.level.length * this.level[0].length;
-      // this.matchesCount >= totalBoxes / 2)
       //win condition
       if (this.matchesCount >= 3) {
 
@@ -284,7 +272,6 @@ class Game extends Phaser.Scene {
           .setOrigin(0.5);
       }
     })
-
   }
 
   //update player movement based on keyboard input

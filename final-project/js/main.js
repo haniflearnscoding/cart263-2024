@@ -11,13 +11,15 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      debug: true,
+      // debug: true,
       gravity: { y: 0 }
     }
   },
 
+
+
   // Scenes included in the game
-  scene: [Boot, Menu, Game, InvisibleMatch, MovingMatch, PlayerMatch]
+  scene: [Boot, Menu, Game, InvisibleMatch, MovingMatch, TimerMatch]
 }
 
 let game = new Phaser.Game(config);
