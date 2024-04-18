@@ -253,25 +253,25 @@ class Game extends Phaser.Scene {
 
   checkEndCondition(first, second) {
     //after delay, set the same color for matched boxes
-    this.time.delayedCall(1000, () => {
-      first.box.setFrame(8);
-      second.box.setFrame(8);
+    // this.time.delayedCall(1000, () => {
+    //   first.box.setFrame(8);
+    //   second.box.setFrame(8);
 
-      //win condition
-      if (this.matchesCount >= 3) {
+    //win condition
+    if (this.matchesCount >= 3) {
 
-        // disable player input and movement
-        this.player.active = false;
-        this.player.setVelocity(0, 0);
+      // disable player input and movement
+      this.player.active = false;
+      this.player.setVelocity(0, 0);
 
-        //display win text
-        const { width, height } = this.game.scale;
-        this.add.text(width * 0.5, height * 0.5, `You Win!`, {
-          fontSize: 48
-        })
-          .setOrigin(0.5);
-      }
-    })
+      //display win text
+      const { width, height } = this.game.scale;
+      this.add.text(width * 0.5, height * 0.5, `You Win!`, {
+        fontSize: 48
+      })
+        .setOrigin(0.5);
+    }
+    // })
   }
 
   //update player movement based on keyboard input
