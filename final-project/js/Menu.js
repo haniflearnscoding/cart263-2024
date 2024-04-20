@@ -40,12 +40,12 @@ class Menu extends Phaser.Scene {
     });
 
     //title text 
-    let title = this.add.text(this.game.canvas.width / 2, 80, "Match");
+    let title = this.add.text(this.game.canvas.width / 2, 80, "MATCH", { font: 'bold 48px Arial', fill: '#ffffff' });
     title.setOrigin(0.5, 0);
 
     let x = 80;
     let y = 170;
-    let verticalSpacing = 14;
+    let verticalSpacing = 20;
 
     //position each menu item
     for (let i = 0; i < menu.length; i++) {
@@ -54,7 +54,7 @@ class Menu extends Phaser.Scene {
         y = 170;
       }
       let item = menu[i];
-      let itemText = this.add.text(x, y, item.text, { font: 'bold 16px Arial', fill: '#ffffff' });
+      let itemText = this.add.text(x, y, item.text, { font: '16px Arial', fill: '#ffffff' });
       y += verticalSpacing;
     }
   }
