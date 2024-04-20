@@ -54,7 +54,7 @@ class Game extends Phaser.Scene {
     }
 
   }
-  //crate keyboard input
+  //create keyboard input
   init() {
     this.cursors = this.input.keyboard.createCursorKeys();
   }
@@ -83,16 +83,15 @@ class Game extends Phaser.Scene {
     this.physics.add.collider(this.player, this.boxGroup, this.handlePlayerBoxCollide, undefined, this);
   }
 
+  //make box group into a static group
   createBoxGroup() {
     this.boxGroup = this.physics.add.staticGroup();
   }
 
-
   createBoxes() {
-
-    const width = this.scale.width;
-    let xPer = 0.25;
-    let y = 150;
+    const width = this.scale.width; // width of the game screen
+    let xPer = 0.25; // percentage based x position
+    let y = 150; // y position
 
     // loop through each row
     for (let row = 0; row < level.length; ++row) {
@@ -105,18 +104,15 @@ class Game extends Phaser.Scene {
           .setOffset(0, 32)
           .setData('itemType', level[row][col])
 
-        //moves to the next horizontal position
-        xPer += 0.25;
+
+        xPer += 0.25; //moves to the next horizontal position
       }
       //reset horizontal position
       xPer = 0.25;
       //move to the next vertical position
       y += 150;
-
     }
   }
-
-
 
   /**
    * 
@@ -143,7 +139,7 @@ class Game extends Phaser.Scene {
    * 
    * @param {Phaser.Physics.Arcade.Sprite} box 
    */
-  // reaveal item behind box
+  // reveal item behind box
   openBox(box) {
     if (!box) {
       return;
@@ -220,7 +216,6 @@ class Game extends Phaser.Scene {
 
   //check for matches between birds
   checkForMatch() {
-    // clearTimeout(t);
     //first and second items from boxes
     const second = this.selectedBoxes.pop();
     const first = this.selectedBoxes.pop();
@@ -247,16 +242,12 @@ class Game extends Phaser.Scene {
     }
     ++this.matchesCount
 
+    // check for end condition
     this.checkEndCondition(first, second);
 
   }
 
   checkEndCondition(first, second) {
-    //after delay, set the same color for matched boxes
-    // this.time.delayedCall(1000, () => {
-    //   first.box.setFrame(8);
-    //   second.box.setFrame(8);
-
     //win condition
     if (this.matchesCount >= 3) {
 
@@ -271,7 +262,6 @@ class Game extends Phaser.Scene {
       })
         .setOrigin(0.5);
     }
-    // })
   }
 
   //update player movement based on keyboard input
@@ -307,7 +297,6 @@ class Game extends Phaser.Scene {
     if (spaceJustPressed && this.activeBox) {
       this.openBox(this.activeBox);
     }
-
   }
 
 
@@ -332,15 +321,15 @@ class Game extends Phaser.Scene {
   }
 
   update() {
-
     //call methods to update player movement and active box
     this.updatePlayer();
     this.updateActiveBox();
 
+    // loop through each sprite in the scene
     this.children.each(c => {
       /** @type {Phaser.Physics.Arcade.Sprite} */
       const child = c;
-
+      // if sorted, skip
       if (child.getData('sorted')) {
         return;
       }

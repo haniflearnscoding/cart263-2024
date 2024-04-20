@@ -3,8 +3,7 @@ class Boot extends Phaser.Scene {
     super(`preloader`);
   }
   preload() {
-
-    //load spritesheet for user character
+    //load spritesheet for user character & boxes
     this.load.spritesheet(`sokoban`, `assets/sokoban_tilesheet.png`, {
       frameWidth: 64
     });
@@ -19,9 +18,6 @@ class Boot extends Phaser.Scene {
     this.load.image(`duck`, `assets/duck.png`);
     this.load.image(`parrot`, `assets/parrot.png`);
     this.load.image(`penguin`, `assets/penguin.png`);
-
-
-
   }
   create() {
 

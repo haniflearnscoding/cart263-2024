@@ -7,7 +7,7 @@ class InvisibleMatch extends Game {
 
   create() {
     super.create();
-
+    //make the player invisible
     this.player.setAlpha(0);
   }
 
