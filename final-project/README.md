@@ -6,6 +6,9 @@ by Hanif Hashim
 
 Attributions: 
 
+- Game Jam (base game only)
+https://github.com/haniflearnscoding/cart263-2024/tree/main/jams/game-jam
+
 - Memory Match Youtube Tutorial
 https://www.youtube.com/playlist?list=PLNwtXgWIx3rgDXzjpcbY6OBj8biD8zOt5
 
